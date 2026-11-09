@@ -16,3 +16,4 @@ An interactive, high-yield Data Structures and Algorithms (DSA) MCQ arcade game 
 
 ## How to Play / Run
 Simply open `index.html` in any modern web browser or deploy with GitHub Pages.
+
