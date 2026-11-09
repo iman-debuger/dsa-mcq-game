@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSA Quest: Super-Short MCQ Exam Blitz</title>
+  <!-- SEO & Social Sharing Meta Tags -->
+  <meta name="description" content="Super-short high-yield Data Structures and Algorithms MCQ Arcade Game covering all 5 exam units with non-repeating questions, lifelines, and instant explanations.">
+  <meta name="keywords" content="DSA, Data Structures, Algorithms, MCQ, Exam Preparation, Computer Science, GATE, University Exams">
+  <meta property="og:title" content="DSA Quest: Super-Short MCQ Exam Blitz">
+  <meta property="og:description" content="Test your DSA concepts with an 80+ question non-repeating quiz arcade across all 5 units.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0b0f19;
+      color: #e2e8f0;
+    }
+    .code-font {
+      font-family: 'Fira Code', monospace;
+    }
+    .glow-cyan {
+      box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.45);
+    }
+    .glow-emerald {
+      box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.45);
+    }
+    .glow-rose {
+      box-shadow: 0 0 25px -5px rgba(244, 63, 94, 0.45);
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    .animate-shake {
+      animation: shake 0.45s ease-in-out;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #06b6d4;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
+
+  <!-- Top Navigation Bar -->
+  <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="returnHome()">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-purple-600 flex items-center justify-center font-bold text-white shadow-lg shadow-cyan-500/20">
+          <i class="fa-solid fa-microchip text-lg"></i>
+        </div>
+        <div>
+          <span class="text-[10px] uppercase tracking-widest text-cyan-400 font-semibold block leading-tight">Exam Prep Suite</span>
+          <h1 class="text-sm sm:text-lg font-bold text-slate-100 flex items-center gap-2">
+            DSA Exam Blitz <span id="poolBadgeHeader" class="text-[11px] bg-slate-800 text-cyan-300 px-2 py-0.5 rounded-full border border-slate-700">80+ Questions</span>
+          </h1>
+        </div>
+      </div>
+
+      <!-- Quick Controls -->
+      <div class="flex items-center space-x-2 sm:space-x-3">
+        <button id="soundToggle" onclick="toggleAudio()" class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 border border-slate-700 text-xs sm:text-sm font-medium text-slate-200 transition flex items-center gap-1.5" title="Toggle audio feedback">
+          <i id="soundIcon" class="fa-solid fa-volume-high text-cyan-400"></i>
+          <span class="hidden sm:inline">Audio</span>
+        </button>
+        <button onclick="openFormulaModal()" class="px-2.5 sm:px-3 py-1.5 rounded-lg bg-indigo-950/70 hover:bg-indigo-900 border border-indigo-700/60 text-xs sm:text-sm font-medium text-indigo-300 transition flex items-center gap-1.5">
+          <i class="fa-solid fa-book-bookmark text-indigo-400"></i>
+          <span class="hidden sm:inline">Formulas</span>
+        </button>
+        <button onclick="resetSeenHistory()" class="px-2 sm:px-2.5 py-1.5 rounded-lg bg-rose-950/50 hover:bg-rose-900/60 border border-rose-800/50 text-[11px] text-rose-300 transition" title="Clear history to re-enable all questions as unseen">
+          <i class="fa-solid fa-rotate text-rose-400"></i>
+          <span class="hidden md:inline ml-1">Reset Pool</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Game Container -->
+  <main class="flex-grow max-w-5xl w-full mx-auto p-4 sm:p-6 flex flex-col justify-center">
+
+    <!-- Screen 1: Home & Unit Selector -->
+    <div id="homeScreen" class="w-full space-y-6">
+      <div class="text-center max-w-2xl mx-auto pt-2 pb-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/80 border border-cyan-800 text-cyan-400 text-xs font-semibold mb-3">
+          <i class="fa-solid fa-infinity text-yellow-400"></i> Smart Replay Engine &bull; Non-Repeating MCQs
+        </div>
+        <h2 class="text-2xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-200 to-indigo-400 tracking-tight">
+          DSA High-Yield MCQ Mastery
+        </h2>
+        <p class="text-xs sm:text-sm text-slate-400 mt-2">
+          Covers all 5 Units directly from your super-short revision notes. <br class="hidden sm:inline"/>Every new game prioritizes <span class="text-cyan-300 font-semibold">unseen questions</span> and shuffles options so questions stay fresh!
+        </p>
+
+        <!-- Freshness Tracker Bar -->
+        <div class="mt-4 max-w-md mx-auto p-3 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-center justify-between text-xs">
+          <span class="text-slate-400">Question Pool Coverage:</span>
+          <div class="flex items-center gap-2 font-mono">
+            <span id="seenCounter" class="text-cyan-400 font-bold">0 / 80 Seen</span>
+            <span id="seenPercentage" class="text-[10px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Play Modes Selection -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <!-- Quick Sprint -->
+        <div onclick="startSession('all', 10)" class="cursor-pointer rounded-2xl bg-gradient-to-b from-slate-900 to-slate-950 border border-slate-800 hover:border-cyan-500/80 p-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:shadow-cyan-500/10 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 font-mono font-bold uppercase">Quick Play</span>
+              <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-bolt text-yellow-400 mr-1"></i>10 MCQs</span>
+            </div>
+            <h3 class="text-base font-bold text-white">Sprint 10 Drill</h3>
+            <p class="text-xs text-slate-400 mt-1">10 brand-new random questions across all 5 units for quick daily testing.</p>
+          </div>
+          <div class="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-xs text-cyan-400 font-medium">
+            <span>Play Now</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </div>
+
+        <!-- Full Exam Blitz -->
+        <div onclick="startSession('all', 25)" class="cursor-pointer rounded-2xl bg-gradient-to-b from-indigo-950/40 via-slate-900 to-slate-950 border border-indigo-500/40 hover:border-indigo-400 p-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/15 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 font-mono font-bold uppercase">Exam Simulation</span>
+              <span class="text-xs text-amber-400 font-mono"><i class="fa-solid fa-fire mr-1"></i>25 MCQs</span>
+            </div>
+            <h3 class="text-base font-bold text-white">25-Question Mock Blitz</h3>
+            <p class="text-xs text-slate-400 mt-1">Simulate a full university midterm or competitive objective test across all 5 modules.</p>
+          </div>
+          <div class="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-xs text-indigo-400 font-medium">
+            <span>Start Simulation</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </div>
+
+        <!-- Endless Marathon -->
+        <div onclick="startSession('all', 50)" class="cursor-pointer rounded-2xl bg-gradient-to-b from-purple-950/40 via-slate-900 to-slate-950 border border-purple-500/40 hover:border-purple-400 p-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-500/15 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-[10px] px-2 py-0.5 rounded bg-purple-950 text-purple-300 font-mono font-bold uppercase">Endurance</span>
+              <span class="text-xs text-purple-300 font-mono"><i class="fa-solid fa-infinity mr-1"></i>50 MCQs</span>
+            </div>
+            <h3 class="text-base font-bold text-white">Mega Marathon (50 Qs)</h3>
+            <p class="text-xs text-slate-400 mt-1">Deep exhaustive run that digs into every single note, recurrence, and formula.</p>
+          </div>
+          <div class="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-xs text-purple-400 font-medium">
+            <span>Begin Marathon</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unit Selector Header -->
+      <div class="pt-2 flex items-center justify-between">
+        <h3 class="text-sm uppercase tracking-wider font-bold text-slate-300 flex items-center gap-2">
+          <i class="fa-solid fa-folder-tree text-cyan-400"></i> Or Practice Specific Units
+        </h3>
+        <span class="text-xs text-slate-500">Pick any unit to drill targeted concepts</span>
+      </div>
+
+      <!-- Unit Cards Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <!-- Unit I -->
+        <div onclick="startSession(1, 15)" class="cursor-pointer rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-cyan-400 p-4 transition-all duration-150 hover:-translate-y-1 flex flex-col justify-between">
+          <div>
+            <div class="text-[10px] font-mono text-cyan-400 font-bold uppercase mb-1">Unit 1</div>
+            <h4 class="text-sm font-bold text-white">Basics & Arrays</h4>
+            <p class="text-[11px] text-slate-400 mt-1">Big-O, Ω, Θ bounds, row-major formulas, 0-indexing, binary & linear search.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-slate-800 text-[11px] text-cyan-400 font-semibold">15 Questions &rarr;</div>
+        </div>
+
+        <!-- Unit II -->
+        <div onclick="startSession(2, 15)" class="cursor-pointer rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-emerald-400 p-4 transition-all duration-150 hover:-translate-y-1 flex flex-col justify-between">
+          <div>
+            <div class="text-[10px] font-mono text-emerald-400 font-bold uppercase mb-1">Unit 2</div>
+            <h4 class="text-sm font-bold text-white">Stacks & Queues</h4>
+            <p class="text-[11px] text-slate-400 mt-1">LIFO/FIFO, PUSH/POP, Circular Queue full formulas, Deque, Singly/Doubly.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-slate-800 text-[11px] text-emerald-400 font-semibold">15 Questions &rarr;</div>
+        </div>
+
+        <!-- Unit III -->
+        <div onclick="startSession(3, 15)" class="cursor-pointer rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-purple-400 p-4 transition-all duration-150 hover:-translate-y-1 flex flex-col justify-between">
+          <div>
+            <div class="text-[10px] font-mono text-purple-400 font-bold uppercase mb-1">Unit 3</div>
+            <h4 class="text-sm font-bold text-white">Trees & Graphs</h4>
+            <p class="text-[11px] text-slate-400 mt-1">N-1 tree edges, NLR/LNR traversals, Dijkstra, Bellman-Ford, Prim vs Kruskal.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-slate-800 text-[11px] text-purple-400 font-semibold">15 Questions &rarr;</div>
+        </div>
+
+        <!-- Unit IV -->
+        <div onclick="startSession(4, 15)" class="cursor-pointer rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-amber-400 p-4 transition-all duration-150 hover:-translate-y-1 flex flex-col justify-between">
+          <div>
+            <div class="text-[10px] font-mono text-amber-400 font-bold uppercase mb-1">Unit 4</div>
+            <h4 class="text-sm font-bold text-white">D&C & Greedy</h4>
+            <p class="text-[11px] text-slate-400 mt-1">Merge vs Quick Sort, Master theorem, Fractional Knapsack, Huffman coding.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-slate-800 text-[11px] text-amber-400 font-semibold">15 Questions &rarr;</div>
+        </div>
+
+        <!-- Unit V -->
+        <div onclick="startSession(5, 15)" class="cursor-pointer rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-rose-400 p-4 transition-all duration-150 hover:-translate-y-1 flex flex-col justify-between">
+          <div>
+            <div class="text-[10px] font-mono text-rose-400 font-bold uppercase mb-1">Unit 5</div>
+            <h4 class="text-sm font-bold text-white">DP, Backtracking & NP</h4>
+            <p class="text-[11px] text-slate-400 mt-1">0/1 Knapsack, TSP Held-Karp, N-Queens, Chromatic number, Cook-Levin SAT.</p>
+          </div>
+          <div class="mt-3 pt-2 border-t border-slate-800 text-[11px] text-rose-400 font-semibold">15 Questions &rarr;</div>
+        </div>
+      </div>
+
+      <!-- Settings & Controls Bar -->
+      <div class="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="p-2 rounded-xl bg-slate-800 text-cyan-400">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+          </div>
+          <div>
+            <h4 class="text-xs sm:text-sm font-semibold text-white">Never-Repeat Mode (Priority to Unseen Questions)</h4>
+            <p class="text-[11px] text-slate-400">Guarantees questions you haven't seen yet are picked before repeating old ones.</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <label class="inline-flex items-center gap-2 cursor-pointer text-xs text-slate-300">
+            <input type="checkbox" id="unseenPriorityToggle" class="sr-only peer" checked>
+            <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-cyan-500 relative"></div>
+            <span>Prioritize Fresh</span>
+          </label>
+          <div class="h-4 w-px bg-slate-700"></div>
+          <label class="inline-flex items-center gap-2 cursor-pointer text-xs text-slate-300">
+            <input type="checkbox" id="timerToggle" class="sr-only peer" checked>
+            <div class="w-9 h-5 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-cyan-500 relative"></div>
+            <span>25s Timer</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 2: Active Gameplay Arena -->
+    <div id="gameScreen" class="w-full hidden space-y-4 max-w-3xl mx-auto">
+      <!-- HUD / Stats bar -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-3 sm:p-4 backdrop-blur-sm flex items-center justify-between gap-2 shadow-lg">
+        <div class="flex items-center gap-3">
+          <button onclick="quitToHomeConfirm()" class="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-slate-800 transition text-sm">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <div>
+            <div class="flex items-center gap-2">
+              <span id="hudUnitBadge" class="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800 code-font uppercase">UNIT 1</span>
+              <span id="seenStatusPill" class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800">NEW</span>
+            </div>
+            <div class="text-xs sm:text-sm font-bold text-white flex items-center gap-2 mt-0.5">
+              <span>Question <span id="currentQNum">1</span> of <span id="totalQNum">10</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Center: Streak multiplier & Timer -->
+        <div class="flex items-center gap-2">
+          <div id="streakBox" class="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-800/80 border border-slate-700/80">
+            <i class="fa-solid fa-fire text-amber-400 text-sm"></i>
+            <span class="text-xs font-mono font-bold text-slate-200"><span id="streakCount">0</span>x Combo</span>
+          </div>
+          <!-- Timer Display -->
+          <div id="timerContainer" class="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-800/80 border border-slate-700/80">
+            <i class="fa-regular fa-clock text-cyan-400 text-sm"></i>
+            <span id="timeLeft" class="text-xs font-mono font-bold text-cyan-300">25s</span>
+          </div>
+        </div>
+
+        <!-- Score counter -->
+        <div class="text-right">
+          <span class="text-[10px] font-semibold tracking-wider uppercase text-slate-400 block">SCORE</span>
+          <span id="scoreText" class="text-base sm:text-lg font-black font-mono text-cyan-400">0</span>
+        </div>
+      </div>
+
+      <!-- Linear Progress Bar -->
+      <div class="w-full bg-slate-800/70 h-2 rounded-full overflow-hidden">
+        <div id="progressBar" class="bg-gradient-to-r from-cyan-500 to-indigo-500 h-full w-0 transition-all duration-300"></div>
+      </div>
+
+      <!-- Lifelines Bar -->
+      <div class="flex items-center justify-between text-xs px-1">
+        <div class="text-slate-400 text-xs flex items-center gap-2">
+          <span>Lifelines:</span>
+          <button id="btn5050" onclick="use5050()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 transition font-mono flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed">
+            <i class="fa-solid fa-circle-half-stroke text-amber-400"></i> 50:50 (<span id="rem5050">2</span>)
+          </button>
+          <button id="btnSkip" onclick="useSkip()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 transition font-mono flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed">
+            <i class="fa-solid fa-forward-step text-purple-400"></i> Skip (<span id="remSkip">2</span>)
+          </button>
+        </div>
+        <div class="text-slate-400 text-xs hidden sm:block">
+          <span id="qCategoryName" class="italic text-slate-400 font-mono">Data Structures</span>
+        </div>
+      </div>
+
+      <!-- Question Card -->
+      <div id="questionCard" class="bg-slate-900 border border-slate-800 rounded-3xl p-5 sm:p-7 shadow-2xl relative overflow-hidden transition-all duration-300">
+        <!-- Question prompt -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between">
+            <span id="questionTopic" class="text-xs uppercase tracking-wider font-mono text-indigo-400 font-semibold mb-1 block">Topic / Concept</span>
+            <span id="questionIdLabel" class="text-[10px] font-mono text-slate-500">ID: #01</span>
+          </div>
+          <h3 id="questionPrompt" class="text-base sm:text-xl font-bold text-slate-100 leading-snug">
+            Question text will appear here...
+          </h3>
+        </div>
+
+        <!-- Options Container -->
+        <div id="optionsGrid" class="grid grid-cols-1 gap-3">
+          <!-- Dynamic Buttons injected here -->
+        </div>
+
+        <!-- Explanation Drawer (Revealed after answering) -->
+        <div id="explanationBox" class="mt-5 p-4 rounded-2xl bg-slate-950/90 border border-slate-800 hidden transition-all">
+          <div class="flex items-start gap-3">
+            <div id="expIcon" class="mt-0.5 text-base">
+              <i class="fa-solid fa-circle-info text-cyan-400"></i>
+            </div>
+            <div class="space-y-1">
+              <h4 id="expTitle" class="text-sm font-bold text-cyan-400">Exam Note Insight</h4>
+              <p id="expText" class="text-xs sm:text-sm text-slate-300 leading-relaxed"></p>
+            </div>
+          </div>
+          <div class="mt-3 flex justify-end">
+            <button id="btnNext" onclick="nextQuestion()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 font-bold text-xs sm:text-sm text-white shadow-lg shadow-cyan-500/25 transition-all flex items-center gap-2">
+              <span>Next Question</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Screen 3: Results & Analytics Screen -->
+    <div id="resultsScreen" class="w-full hidden max-w-3xl mx-auto space-y-6">
+      <div class="text-center py-4 bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+        <div id="resultBadge" class="w-16 h-16 mx-auto rounded-2xl bg-cyan-500/20 border border-cyan-500/40 flex items-center justify-center text-3xl mb-4 text-cyan-300">
+          🏆
+        </div>
+        <h2 id="resultHeadline" class="text-2xl sm:text-3xl font-extrabold text-white">Session Completed!</h2>
+        <p id="resultSubtitle" class="text-sm text-slate-400 mt-1 max-w-md mx-auto">Great job revising key data structures and algorithmic paradigms.</p>
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-6">
+          <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800">
+            <span class="text-[10px] uppercase font-mono tracking-wider text-slate-400 block">Final Score</span>
+            <span id="finalScore" class="text-xl sm:text-2xl font-black font-mono text-cyan-400">0</span>
+          </div>
+          <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800">
+            <span class="text-[10px] uppercase font-mono tracking-wider text-slate-400 block">Accuracy</span>
+            <span id="finalAccuracy" class="text-xl sm:text-2xl font-black font-mono text-emerald-400">0%</span>
+          </div>
+          <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800">
+            <span class="text-[10px] uppercase font-mono tracking-wider text-slate-400 block">Max Streak</span>
+            <span id="finalStreak" class="text-xl sm:text-2xl font-black font-mono text-amber-400">0</span>
+          </div>
+          <div class="bg-slate-950/70 p-3.5 rounded-2xl border border-slate-800">
+            <span class="text-[10px] uppercase font-mono tracking-wider text-slate-400 block">Total Solved</span>
+            <span id="finalSolved" class="text-xl sm:text-2xl font-black font-mono text-indigo-400">0/0</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <button onclick="retryCurrentQuiz()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 font-bold text-sm text-white shadow-lg shadow-cyan-500/20 transition flex items-center gap-2">
+            <i class="fa-solid fa-play"></i>
+            <span>Play Next Fresh Round</span>
+          </button>
+          <button onclick="returnHome()" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-sm font-semibold text-slate-200 transition flex items-center gap-2">
+            <i class="fa-solid fa-house"></i>
+            <span>Change Mode / Unit</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Question Review Log -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-5 sm:p-6 shadow-xl">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-800 mb-4">
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-clipboard-check text-cyan-400"></i>
+            <span>Session Question Breakdown & Notes</span>
+          </h3>
+          <span id="mistakeBadge" class="text-xs px-2.5 py-1 rounded-full bg-slate-800 font-mono text-slate-300 border border-slate-700">0 Review Items</span>
+        </div>
+        <div id="reviewList" class="space-y-4 max-h-[420px] overflow-y-auto pr-1">
+          <!-- Injected items -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Formula & Quick Reference Modal -->
+  <div id="formulaModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 shadow-2xl overflow-hidden flex flex-col max-h-[85vh]">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-calculator text-indigo-400"></i>
+          <span>DSA Super-Short Formulas & Keywords</span>
+        </h3>
+        <button onclick="closeFormulaModal()" class="text-slate-400 hover:text-white p-1 rounded-lg">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="overflow-y-auto space-y-4 pt-4 pr-1 text-xs sm:text-sm text-slate-300">
+        <div class="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800">
+          <span class="text-cyan-400 font-bold block mb-1">📐 Critical Graph & Tree Formulas</span>
+          <ul class="list-disc list-inside space-y-1 font-mono text-xs">
+            <li>Tree with <span class="text-white">N</span> nodes has exactly <span class="text-amber-300">N - 1</span> edges.</li>
+            <li>Complete Undirected Graph edges: <span class="text-amber-300">V(V - 1) / 2</span>.</li>
+            <li>Minimum Spanning Tree (MST) always contains: <span class="text-amber-300">V - 1</span> edges.</li>
+            <li>Max nodes at height <span class="text-white">H</span>: <span class="text-amber-300">2^(H + 1) - 1</span>.</li>
+            <li>Max nodes at level <span class="text-white">L</span>: <span class="text-amber-300">2^L</span>.</li>
+            <li>Binary tree (0-based array): Left = <span class="text-amber-300">2i + 1</span>, Right = <span class="text-amber-300">2i + 2</span>, Parent = <span class="text-amber-300">floor((i-1)/2)</span>.</li>
+          </ul>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800">
+          <span class="text-emerald-400 font-bold block mb-1">🔢 Memory Addressing & Queues</span>
+          <ul class="list-disc list-inside space-y-1 font-mono text-xs">
+            <li>1D Array: <span class="text-amber-300">Base + (i × W)</span></li>
+            <li>2D Row-Major: <span class="text-amber-300">Base + W × (i × Columns + j)</span></li>
+            <li>Circular Queue Full: <span class="text-amber-300">(REAR + 1) % SIZE == FRONT</span></li>
+            <li>Circular Queue Empty: <span class="text-amber-300">FRONT == -1</span></li>
+          </ul>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800">
+          <span class="text-purple-400 font-bold block mb-1">⚡ Complexity Hierarchy (Low &rarr; High)</span>
+          <p class="font-mono text-xs text-slate-300">
+            O(1) &lt; O(log N) &lt; O(N) &lt; O(N log N) &lt; O(N²) &lt; O(N³) &lt; O(2^N) &lt; O(N!)
+          </p>
+        </div>
+
+        <div class="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800">
+          <span class="text-amber-400 font-bold block mb-1">🎯 Must-Remember Core Pairs</span>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div><span class="text-slate-400">Stack:</span> LIFO, Push/Pop, DFS</div>
+            <div><span class="text-slate-400">Queue:</span> FIFO, Enqueue/Dequeue, BFS</div>
+            <div><span class="text-slate-400">Dijkstra:</span> Non-negative edges</div>
+            <div><span class="text-slate-400">Bellman-Ford:</span> Allows negative weights</div>
+            <div><span class="text-slate-400">Topological Sort:</span> Requires DAG</div>
+            <div><span class="text-slate-400">Fractional Knapsack:</span> Greedy</div>
+            <div><span class="text-slate-400">0/1 Knapsack:</span> Dynamic Programming</div>
+            <div><span class="text-slate-400">N-Queens:</span> Backtracking (N=2,3 no sol)</div>
+            <div><span class="text-slate-400">First NP-Complete:</span> SAT (Cook-Levin)</div>
+            <div><span class="text-slate-400">BST Inorder:</span> Sorted sequence</div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 pt-3 border-t border-slate-800 flex justify-end">
+        <button onclick="closeFormulaModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white">Close Sheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Alert Toast Box -->
+  <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <div id="toastInner" class="flex items-center gap-3 px-4 py-3 rounded-2xl bg-slate-900 border border-slate-700 text-white shadow-2xl text-xs sm:text-sm">
+      <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+      <span id="toastMsg">Notification message</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 bg-slate-950/80 py-4 text-center text-xs text-slate-500">
+    <p>Data Structures & Algorithms MCQ Revision Suite &bull; Synthesized from Units I - V Notes &bull; 80+ Question Smart Pool</p>
+  </footer>
+
+  <!-- Core JavaScript & Sound Synthesizer -->
+  <script>
+    /* =========================================================
+       AUDIO SYNTHESIZER (Web Audio API - No external sound URLs)
+       ========================================================= */
+    let audioCtx = null;
+    let soundEnabled = true;
+
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioCtx = new AudioContextClass();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function toggleAudio() {
+      soundEnabled = !soundEnabled;
+      const icon = document.getElementById('soundIcon');
+      if (soundEnabled) {
+        icon.className = 'fa-solid fa-volume-high text-cyan-400';
+        showToast('Sound effects enabled', 'info');
+      } else {
+        icon.className = 'fa-solid fa-volume-xmark text-slate-500';
+        showToast('Sound muted', 'info');
+      }
+    }
+
+    function playTone(type) {
+      if (!soundEnabled) return;
+      initAudio();
+      if (!audioCtx) return;
+
+      const now = audioCtx.currentTime;
+
+      if (type === 'correct') {
+        const osc1 = audioCtx.createOscillator();
+        const osc2 = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc1.type = 'triangle';
+        osc2.type = 'sine';
+
+        osc1.frequency.setValueAtTime(523.25, now);
+        osc1.frequency.setValueAtTime(659.25, now + 0.08);
+        osc1.frequency.setValueAtTime(783.99, now + 0.16);
+        osc1.frequency.setValueAtTime(1046.50, now + 0.24);
+
+        osc2.frequency.setValueAtTime(1046.50, now + 0.24);
+
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc1.start(now);
+        osc2.start(now + 0.2);
+        osc1.stop(now + 0.45);
+        osc2.stop(now + 0.45);
+      } else if (type === 'wrong') {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.exponentialRampToValueAtTime(80, now + 0.3);
+
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.3);
+      } else if (type === 'click') {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(600, now);
+
+        gain.gain.setValueAtTime(0.05, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.04);
+      } else if (type === 'lifeline') {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.exponentialRampToValueAtTime(880, now + 0.18);
+
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + 0.2);
+      }
+    }
+
+    /* =========================================================
+       80+ QUESTION BANK (Directly Mapped from Notes & Syllabus)
+       ========================================================= */
+    const QUESTION_BANK = [
+      // --- UNIT I: BASICS, COMPLEXITY & ARRAYS (IDs 101 - 117) ---
+      {
+        id: 101, unit: 1, topic: "Asymptotic Notation",
+        q: "Which asymptotic notation represents the tight mathematical bound of an algorithm?",
+        correct: "Theta (Θ)",
+        distractors: ["Big O (O)", "Omega (Ω)", "Little o (o)"],
+        exp: "Big O (O) is Upper Bound, Omega (Ω) is Lower Bound, and Theta (Θ) represents the Tight Bound."
+      },
+      {
+        id: 102, unit: 1, topic: "Complexity Ordering",
+        q: "What is the correct increasing order of asymptotic complexity from lowest to highest?",
+        correct: "O(1) → O(log N) → O(N) → O(N log N) → O(N²) → O(2^N)",
+        distractors: [
+          "O(log N) → O(1) → O(N) → O(N²) → O(N log N) → O(2^N)",
+          "O(1) → O(N) → O(log N) → O(N log N) → O(2^N) → O(N²)",
+          "O(1) → O(log N) → O(N log N) → O(N) → O(N²) → O(N!)"
+        ],
+        exp: "Notes order: O(1) → O(log N) → O(N) → O(N log N) → O(N²) → O(N³) → O(2^N) → O(N!)."
+      },
+      {
+        id: 103, unit: 1, topic: "Array Addressing",
+        q: "What is the address formula for element (i, j) in a 2D Array stored in Row-Major Order?",
+        correct: "Base + W × (i × Columns + j)",
+        distractors: [
+          "Base + W × (i × Rows + j)",
+          "Base + W × (j × Columns + i)",
+          "Base + (i + j) × W"
+        ],
+        exp: "In C row-major order: Address = Base + W × (i × Columns + j), where W is the element byte size."
+      },
+      {
+        id: 104, unit: 1, topic: "1D Array Addressing",
+        q: "What is the memory address formula for the i-th element of a 1D array?",
+        correct: "Base + (i × W)",
+        distractors: ["Base + (i + W)", "Base × (i + W)", "Base + (i / W)"],
+        exp: "In 1D arrays, memory is contiguous: Address = Base + (i × W)."
+      },
+      {
+        id: 105, unit: 1, topic: "Searching Requirements",
+        q: "What is the primary prerequisite for running Binary Search on a dataset?",
+        correct: "Data must be completely sorted",
+        distractors: [
+          "Data must be stored in a linked list",
+          "Data must contain only positive integers",
+          "Data size must be a power of two"
+        ],
+        exp: "Binary Search repeatedly divides the array into halves and strictly requires sorted data."
+      },
+      {
+        id: 106, unit: 1, topic: "Data Structure Types",
+        q: "Which of the following data structures is classified as Non-Linear?",
+        correct: "Tree and Graph",
+        distractors: ["Array and Stack", "Stack and Queue", "Linked List and Array"],
+        exp: "Linear structures are Array, Stack, Queue, Linked List. Non-linear structures are Tree and Graph."
+      },
+      {
+        id: 107, unit: 1, topic: "Array Access Complexity",
+        q: "What is the time complexity of accessing an element at a given index in a contiguous array?",
+        correct: "O(1)",
+        distractors: ["O(log N)", "O(N)", "O(N²)"],
+        exp: "Direct index access in contiguous memory is O(1) constant time, while traversal/search takes O(N)."
+      },
+      {
+        id: 108, unit: 1, topic: "Linear Search",
+        q: "What are the Best-case and Worst-case time complexities of Linear Search respectively?",
+        correct: "O(1) and O(N)",
+        distractors: ["O(1) and O(log N)", "O(log N) and O(N)", "O(N) and O(N)"],
+        exp: "Linear search finds the element at index 0 in O(1) best case, and checks all N elements in O(N) worst case."
+      },
+      {
+        id: 109, unit: 1, topic: "C Indexing Conventions",
+        q: "In C language arrays, indexing starts from:",
+        correct: "0",
+        distractors: ["-1", "1", "User-specified lower bound"],
+        exp: "C uses 0-based indexing and stores elements sequentially in contiguous memory using Row-Major Order."
+      },
+      {
+        id: 110, unit: 1, topic: "Algorithm Characteristics",
+        q: "Which of the following is NOT an essential characteristic of an algorithm according to Unit I?",
+        correct: "Infinite execution",
+        distractors: ["Finiteness", "Definiteness", "Effectiveness"],
+        exp: "Algorithm characteristics: Input, Output, Definiteness, Finiteness, Effectiveness, and Correctness."
+      },
+      {
+        id: 111, unit: 1, topic: "Dynamic vs Static",
+        q: "A data structure whose size is fixed at compile-time and cannot grow during runtime is:",
+        correct: "Static data structure",
+        distractors: ["Dynamic data structure", "Non-linear data structure", "Primitive pointer"],
+        exp: "Static structures have fixed memory allocation, whereas dynamic structures can allocate/deallocate memory during execution."
+      },
+      {
+        id: 112, unit: 1, topic: "Binary Search Complexity",
+        q: "What is the worst-case time complexity of Binary Search?",
+        correct: "O(log N)",
+        distractors: ["O(1)", "O(N)", "O(N log N)"],
+        exp: "Binary search cuts the search space in half at each step, yielding O(log N) time complexity."
+      },
+      {
+        id: 113, unit: 1, topic: "Basic Terminology",
+        q: "Visiting every element of a data structure at least once is technically called:",
+        correct: "Traversal",
+        distractors: ["Searching", "Sorting", "Hashing"],
+        exp: "Traversal is the process of systematically visiting every element in a data structure."
+      },
+      {
+        id: 114, unit: 1, topic: "Primitive Structures",
+        q: "Which of the following belongs to Primitive Data Structures?",
+        correct: "Integer and Float",
+        distractors: ["Array and Stack", "Tree and Graph", "Queue and Linked List"],
+        exp: "Primitive types directly supported by machine instructions include Integer, Float, Character, and Boolean."
+      },
+      {
+        id: 115, unit: 1, topic: "Lower Bound Notation",
+        q: "The asymptotic notation Omega (Ω) formally describes an algorithm's:",
+        correct: "Lower bound",
+        distractors: ["Upper bound", "Tight bound", "Average bound"],
+        exp: "Omega (Ω) denotes the asymptotic lower bound (minimum growth rate)."
+      },
+      {
+        id: 116, unit: 1, topic: "Array Insertion Complexity",
+        q: "What is the time complexity of inserting an element at an arbitrary position in an array?",
+        correct: "O(N)",
+        distractors: ["O(1)", "O(log N)", "O(N²)"],
+        exp: "Arbitrary insertion in an array requires shifting up to N existing elements, taking O(N) time."
+      },
+      {
+        id: 117, unit: 1, topic: "Space Complexity",
+        q: "The total amount of memory space required by an algorithm during execution is termed its:",
+        correct: "Space Complexity",
+        distractors: ["Time Complexity", "Asymptotic Efficiency", "Auxiliary Bitrate"],
+        exp: "Space Complexity measures the total memory space taken by the algorithm as a function of input size."
+      },
+
+      // --- UNIT II: STACKS, QUEUES & LINKED LISTS (IDs 201 - 217) ---
+      {
+        id: 201, unit: 2, topic: "Stack Principle",
+        q: "Which operational principle does a Stack data structure follow?",
+        correct: "LIFO (Last In, First Out)",
+        distractors: ["FIFO (First In, First Out)", "LILO (Last In, Last Out)", "Priority First"],
+        exp: "Stack operates on LIFO (Last In, First Out). The element inserted last is removed first."
+      },
+      {
+        id: 202, unit: 2, topic: "Queue Principle",
+        q: "Which operational principle does a linear Queue data structure follow?",
+        correct: "FIFO (First In, First Out)",
+        distractors: ["LIFO (Last In, First Out)", "FILO (First In, Last Out)", "Random Order"],
+        exp: "Queue operates on FIFO (First In, First Out). The first element inserted is dequeued first."
+      },
+      {
+        id: 203, unit: 2, topic: "Circular Queue Condition",
+        q: "What is the full condition for a Circular Queue implemented with array size 'SIZE'?",
+        correct: "(REAR + 1) % SIZE == FRONT",
+        distractors: ["REAR == FRONT", "(FRONT + 1) % SIZE == REAR", "REAR == SIZE - 1"],
+        exp: "In circular queue implementation, full occurs when (REAR + 1) % SIZE == FRONT."
+      },
+      {
+        id: 204, unit: 2, topic: "Circular Queue Empty",
+        q: "What is the empty condition for a Circular Queue in standard array implementation?",
+        correct: "FRONT == -1",
+        distractors: ["REAR == SIZE", "FRONT == REAR + 1", "REAR == 0"],
+        exp: "When both FRONT and REAR are -1, the circular queue is completely empty."
+      },
+      {
+        id: 205, unit: 2, topic: "Queue Operations",
+        q: "In a standard queue, insertions and deletions take place at which ends?",
+        correct: "Insertion at REAR, Deletion at FRONT",
+        distractors: [
+          "Insertion at FRONT, Deletion at REAR",
+          "Both at FRONT",
+          "Both at TOP"
+        ],
+        exp: "ENQUEUE occurs at the REAR, and DEQUEUE occurs at the FRONT."
+      },
+      {
+        id: 206, unit: 2, topic: "Stack State",
+        q: "Attempting to delete (POP) an element from an empty stack results in:",
+        correct: "Stack Underflow",
+        distractors: ["Stack Overflow", "Segmentation Fault", "Dangling Pointer"],
+        exp: "Underflow occurs when attempting to POP from an empty stack (TOP == -1)."
+      },
+      {
+        id: 207, unit: 2, topic: "Stack Overflow",
+        q: "Attempting to insert (PUSH) an element into a stack that is already full results in:",
+        correct: "Stack Overflow",
+        distractors: ["Stack Underflow", "Memory Leak", "Garbage Collection"],
+        exp: "Overflow occurs when pushing onto an array stack that has reached capacity."
+      },
+      {
+        id: 208, unit: 2, topic: "Stack Complexity",
+        q: "What is the time complexity of PUSH, POP, and PEEK operations on a stack?",
+        correct: "O(1)",
+        distractors: ["O(log N)", "O(N)", "O(N²)"],
+        exp: "Push, Pop, and Peek operate directly at the TOP pointer in O(1) constant time."
+      },
+      {
+        id: 209, unit: 2, topic: "Stack Applications",
+        q: "Which of the following is an established practical application of a Stack?",
+        correct: "Parentheses matching and recursion call stack",
+        distractors: [
+          "Breadth-First Search (BFS)",
+          "Disk scheduling algorithms",
+          "Round-robin CPU scheduling"
+        ],
+        exp: "Stacks are used for function call stacks, recursion, expression evaluation, parentheses matching, and DFS."
+      },
+      {
+        id: 210, unit: 2, topic: "Graph Traversal Matching",
+        q: "Which graph traversal uses a Stack and which uses a Queue?",
+        correct: "DFS uses Stack, BFS uses Queue",
+        distractors: [
+          "BFS uses Stack, DFS uses Queue",
+          "Both use Stack",
+          "Both use Queue"
+        ],
+        exp: "Depth First Search (DFS) uses a Stack; Breadth First Search (BFS) uses a Queue."
+      },
+      {
+        id: 211, unit: 2, topic: "Expression Notations",
+        q: "An expression where operators precede operands (e.g., '+AB') is called:",
+        correct: "Prefix expression",
+        distractors: ["Infix expression", "Postfix expression", "Syntactic expression"],
+        exp: "Infix is A+B, Prefix is +AB, and Postfix is AB+."
+      },
+      {
+        id: 212, unit: 2, topic: "Deque Characteristics",
+        q: "What distinguishes a Deque (Double-Ended Queue) from a standard queue?",
+        correct: "Allows insertion and deletion at BOTH ends",
+        distractors: [
+          "Elements are automatically sorted",
+          "Deletion is restricted to the middle",
+          "Operates in LIFO order exclusively"
+        ],
+        exp: "A Deque allows insertion and deletion from both FRONT and REAR ends."
+      },
+      {
+        id: 213, unit: 2, topic: "Linked List Node Structure",
+        q: "In a Singly Linked List, what does the next pointer of the final node contain?",
+        correct: "NULL",
+        distractors: ["Pointer to HEAD", "0", "Pointer to previous node"],
+        exp: "In a standard singly linked list, the final node's next pointer is NULL."
+      },
+      {
+        id: 214, unit: 2, topic: "Circular Linked List",
+        q: "In a Circular Singly Linked List, what does the next pointer of the last node store?",
+        correct: "Pointer to the first (HEAD) node",
+        distractors: ["NULL", "Pointer to the previous node", "A garbage memory address"],
+        exp: "In a circular linked list, the last node links back to the HEAD node, forming a ring."
+      },
+      {
+        id: 215, unit: 2, topic: "Doubly Linked List",
+        q: "How many pointers does each node contain in a Doubly Linked List?",
+        correct: "Two pointers (previous and next)",
+        distractors: ["One pointer", "Three pointers", "No pointers"],
+        exp: "A doubly linked list node contains data, a previous (prev) pointer, and a next pointer."
+      },
+      {
+        id: 216, unit: 2, topic: "Linked List Insertion",
+        q: "What is the time complexity to insert a new node at the beginning of a singly linked list?",
+        correct: "O(1)",
+        distractors: ["O(log N)", "O(N)", "O(N²)"],
+        exp: "Inserting at the beginning takes O(1) time because only HEAD and the new node's next pointer change."
+      },
+      {
+        id: 217, unit: 2, topic: "Linked List Search",
+        q: "Searching for an arbitrary element in an unsorted singly linked list has time complexity:",
+        correct: "O(N)",
+        distractors: ["O(1)", "O(log N)", "O(N log N)"],
+        exp: "Linked lists lack random access, requiring sequential traversal of up to N nodes: O(N)."
+      },
+
+      // --- UNIT III: TREES AND GRAPHS (IDs 301 - 318) ---
+      {
+        id: 301, unit: 3, topic: "Tree Edges Formula",
+        q: "A valid Tree containing N nodes will always have exactly how many edges?",
+        correct: "N - 1",
+        distractors: ["N", "N + 1", "N(N - 1) / 2"],
+        exp: "Every tree with N nodes contains exactly N - 1 edges and contains no cycles."
+      },
+      {
+        id: 302, unit: 3, topic: "Binary Tree Nodes Formula",
+        q: "What is the maximum number of nodes in a binary tree of height H?",
+        correct: "2^(H + 1) - 1",
+        distractors: ["2^H", "2H + 1", "2^(H - 1) + 1"],
+        exp: "The maximum number of nodes in a binary tree of height H is 2^(H+1) - 1."
+      },
+      {
+        id: 303, unit: 3, topic: "Binary Tree Level Nodes",
+        q: "What is the maximum number of nodes present at level L of a binary tree?",
+        correct: "2^L",
+        distractors: ["2^(L - 1)", "2L", "L²"],
+        exp: "Level 0 has 2^0=1 node, Level 1 has 2^1=2 nodes, and Level L has at most 2^L nodes."
+      },
+      {
+        id: 304, unit: 3, topic: "Full Binary Tree",
+        q: "By definition, in a Full Binary Tree, every node has:",
+        correct: "0 or 2 children",
+        distractors: ["Exactly 1 child", "At least 2 children", "Maximum 1 child"],
+        exp: "A Full Binary Tree requires every node to have either 0 or 2 children."
+      },
+      {
+        id: 305, unit: 3, topic: "BST Inorder Traversal",
+        q: "Performing an Inorder (LNR) traversal on a Binary Search Tree (BST) produces:",
+        correct: "Keys in strictly ascending sorted order",
+        distractors: [
+          "Keys in descending order",
+          "Keys grouped level-by-level",
+          "Leaves first followed by root"
+        ],
+        exp: "Inorder traversal (Left, Node, Right) on a valid BST always yields elements in sorted order."
+      },
+      {
+        id: 306, unit: 3, topic: "Preorder Acronym",
+        q: "What does the Preorder traversal sequence 'NLR' represent?",
+        correct: "Node (Root), Left, Right",
+        distractors: ["Next, Left, Root", "Leaf, Node, Right", "Null, Left, Root"],
+        exp: "Preorder visits the Node/Root first, then Left subtree, then Right subtree (NLR)."
+      },
+      {
+        id: 307, unit: 3, topic: "Postorder Acronym",
+        q: "What is the traversal order of Postorder (LRN)?",
+        correct: "Left, Right, Node (Root)",
+        distractors: ["Left, Root, Right", "Root, Left, Right", "Right, Left, Root"],
+        exp: "Postorder visits Left first, then Right, and finally Node/Root (LRN)."
+      },
+      {
+        id: 308, unit: 3, topic: "Array Representation of Tree",
+        q: "In 0-based array indexing of a binary tree, what is the index of the Left Child of node i?",
+        correct: "2i + 1",
+        distractors: ["2i", "2i + 2", "i / 2"],
+        exp: "In 0-based indexing: Left child = 2i + 1, Right child = 2i + 2, Parent = floor((i - 1)/2)."
+      },
+      {
+        id: 309, unit: 3, topic: "Array Representation Parent",
+        q: "In 0-based array indexing of a binary tree, the parent of node i is located at:",
+        correct: "floor((i - 1) / 2)",
+        distractors: ["i / 2", "(i + 1) / 2", "2i - 1"],
+        exp: "The parent of index i in a 0-based binary tree array is floor((i - 1)/2)."
+      },
+      {
+        id: 310, unit: 3, topic: "Complete Undirected Graph Edges",
+        q: "How many edges are in a complete undirected graph with V vertices?",
+        correct: "V(V - 1) / 2",
+        distractors: ["V - 1", "V²", "2V"],
+        exp: "A complete undirected graph connects each vertex to every other vertex: V(V - 1)/2 edges."
+      },
+      {
+        id: 311, unit: 3, topic: "Minimum Spanning Tree Edges",
+        q: "A Minimum Spanning Tree (MST) for a connected graph with V vertices has exactly how many edges?",
+        correct: "V - 1",
+        distractors: ["V", "V + 1", "V(V - 1)/2"],
+        exp: "An MST connects all V vertices without any cycles, which always requires exactly V - 1 edges."
+      },
+      {
+        id: 312, unit: 3, topic: "Dijkstra's Algorithm",
+        q: "What is a strict constraint for applying Dijkstra's shortest path algorithm?",
+        correct: "Edge weights must be non-negative",
+        distractors: [
+          "Graph must be acyclic (DAG)",
+          "Graph must be complete",
+          "Graph must contain negative cycles"
+        ],
+        exp: "Dijkstra requires non-negative edge weights. Bellman-Ford is used if negative weights exist."
+      },
+      {
+        id: 313, unit: 3, topic: "Bellman-Ford Algorithm",
+        q: "Which shortest path algorithm correctly handles negative edge weights and detects negative cycles?",
+        correct: "Bellman-Ford Algorithm",
+        distractors: ["Dijkstra's Algorithm", "Prim's Algorithm", "Kruskal's Algorithm"],
+        exp: "Bellman-Ford supports negative edge weights and can detect reachable negative-weight cycles (O(VE))."
+      },
+      {
+        id: 314, unit: 3, topic: "Topological Sort",
+        q: "Topological sorting can only be performed on which category of graph?",
+        correct: "Directed Acyclic Graph (DAG)",
+        distractors: [
+          "Undirected Acyclic Graph",
+          "Directed Cyclic Graph",
+          "Complete Graph"
+        ],
+        exp: "Topological sorting produces a linear ordering of vertices and works strictly on DAGs."
+      },
+      {
+        id: 315, unit: 3, topic: "Prim vs Kruskal",
+        q: "How do Prim's and Kruskal's algorithms differ in constructing an MST?",
+        correct: "Prim grows a single tree vertex by vertex; Kruskal sorts all edges and selects without cycles",
+        distractors: [
+          "Prim uses Union-Find; Kruskal does not",
+          "Prim works only on directed graphs; Kruskal on undirected",
+          "Kruskal grows a single tree; Prim connects disconnected components"
+        ],
+        exp: "Prim's algorithm grows a tree starting from a vertex. Kruskal's algorithm sorts edges by weight and uses Union-Find."
+      },
+      {
+        id: 316, unit: 3, topic: "Graph Representation Space",
+        q: "What is the space complexity of an Adjacency Matrix for a graph with V vertices?",
+        correct: "O(V²)",
+        distractors: ["O(V + E)", "O(E²)", "O(V log V)"],
+        exp: "An Adjacency Matrix uses a 2D array of size V × V, requiring O(V²) space."
+      },
+      {
+        id: 317, unit: 3, topic: "Adjacency List Space",
+        q: "What is the space complexity of an Adjacency List for a graph with V vertices and E edges?",
+        correct: "O(V + E)",
+        distractors: ["O(V²)", "O(E²)", "O(V log E)"],
+        exp: "An Adjacency List stores lists of neighbors, taking O(V + E) space, ideal for sparse graphs."
+      },
+      {
+        id: 318, unit: 3, topic: "Unweighted Shortest Path",
+        q: "Which traversal algorithm finds the shortest path between two vertices in an unweighted graph?",
+        correct: "BFS (Breadth First Search)",
+        distractors: ["DFS (Depth First Search)", "Preorder Traversal", "Postorder Traversal"],
+        exp: "BFS explores level by level using a queue, guaranteeing shortest path distances in unweighted graphs."
+      },
+
+      // --- UNIT IV: DIVIDE & CONQUER AND GREEDY METHOD (IDs 401 - 416) ---
+      {
+        id: 401, unit: 4, topic: "Divide and Conquer Steps",
+        q: "What are the three canonical steps in the Divide and Conquer strategy?",
+        correct: "Divide, Conquer, Combine",
+        distractors: [
+          "Partition, Branch, Bound",
+          "Greedy Choice, Subproblem, Memoize",
+          "Base Case, Recursion, Return"
+        ],
+        exp: "Divide & Conquer consists of: 1. Divide into subproblems, 2. Conquer recursively, 3. Combine solutions."
+      },
+      {
+        id: 402, unit: 4, topic: "Quick Sort Worst-Case",
+        q: "What is the worst-case time complexity of Quick Sort?",
+        correct: "O(N²)",
+        distractors: ["O(N log N)", "O(N)", "O(log N)"],
+        exp: "Quick Sort degrades to O(N²) when partitions are maximally unbalanced (e.g. sorted input with poor pivot)."
+      },
+      {
+        id: 403, unit: 4, topic: "Merge Sort Worst-Case",
+        q: "What is the worst-case time complexity of Merge Sort?",
+        correct: "O(N log N)",
+        distractors: ["O(N²)", "O(N)", "O(log N)"],
+        exp: "Merge Sort always divides arrays into halves and merges in O(N), guaranteeing O(N log N) in all cases."
+      },
+      {
+        id: 404, unit: 4, topic: "Sorting Stability",
+        q: "Comparing Merge Sort and standard Quick Sort with respect to stability:",
+        correct: "Merge Sort is stable; Quick Sort is usually unstable",
+        distractors: [
+          "Both are always stable",
+          "Quick Sort is stable; Merge Sort is unstable",
+          "Neither can ever be stable"
+        ],
+        exp: "Standard Merge Sort preserves relative order of identical elements (stable); Quick Sort does not."
+      },
+      {
+        id: 405, unit: 4, topic: "Merge Sort Auxiliary Space",
+        q: "How much auxiliary space does standard Merge Sort require for merging?",
+        correct: "O(N)",
+        distractors: ["O(1) in-place", "O(log N)", "O(N²)"],
+        exp: "Merge Sort requires O(N) temporary array space to merge the sorted sub-arrays."
+      },
+      {
+        id: 406, unit: 4, topic: "Fractional Knapsack",
+        q: "Which algorithmic paradigm provides the optimal solution to the Fractional Knapsack problem?",
+        correct: "Greedy Method",
+        distractors: ["Dynamic Programming", "Backtracking", "Branch and Bound"],
+        exp: "Fractional Knapsack allows taking fractions of items and is solved optimally via Greedy (sorting by Profit/Weight)."
+      },
+      {
+        id: 407, unit: 4, topic: "Greedy Method Principle",
+        q: "What is the core working principle of the Greedy Method?",
+        correct: "Makes the locally optimal choice at each step without reconsidering",
+        distractors: [
+          "Exhaustively evaluates all combinations before choosing",
+          "Builds full tables bottom-up",
+          "Backtracks whenever a constraint is violated"
+        ],
+        exp: "The greedy method selects locally best choices hoping to reach an optimal global solution."
+      },
+      {
+        id: 408, unit: 4, topic: "Huffman Coding",
+        q: "Huffman Coding is a greedy data compression algorithm that generates:",
+        correct: "Prefix-free lossless codes where frequent characters receive shorter codes",
+        distractors: [
+          "Lossy fixed-length 8-bit codes",
+          "Dynamic programming tables with quadratic space",
+          "Codes where rarer characters receive shorter bit sequences"
+        ],
+        exp: "Huffman coding is lossless and greedy: frequent characters get shorter prefix-free codes."
+      },
+      {
+        id: 409, unit: 4, topic: "Job Sequencing Order",
+        q: "In Job Sequencing with Deadlines, in what order should jobs initially be sorted?",
+        correct: "Decreasing order of profit",
+        distractors: ["Increasing order of deadlines", "Decreasing order of deadlines", "Random order"],
+        exp: "Jobs are sorted by decreasing profit to greedily schedule high-value jobs into the latest possible free slots."
+      },
+      {
+        id: 410, unit: 4, topic: "Recurrence Relation for Merge Sort",
+        q: "Which recurrence relation describes Merge Sort?",
+        correct: "T(N) = 2T(N/2) + N",
+        distractors: ["T(N) = T(N/2) + 1", "T(N) = T(N - 1) + 1", "T(N) = 2T(N - 1) + 1"],
+        exp: "T(N) = 2T(N/2) + N solves to O(N log N) by the Master Theorem."
+      },
+      {
+        id: 411, unit: 4, topic: "Binary Search Recurrence",
+        q: "What recurrence relation corresponds to Binary Search?",
+        correct: "T(N) = T(N/2) + O(1)",
+        distractors: ["T(N) = 2T(N/2) + N", "T(N) = T(N - 1) + 1", "T(N) = 2T(N - 1) + 1"],
+        exp: "Binary search tests the midpoint in O(1) and recurses on one half: T(N) = T(N/2) + O(1) = O(log N)."
+      },
+      {
+        id: 412, unit: 4, topic: "Exponential Recurrence",
+        q: "What is the time complexity of the recurrence relation T(N) = 2T(N - 1) + 1?",
+        correct: "O(2^N)",
+        distractors: ["O(N log N)", "O(N²)", "O(N)"],
+        exp: "T(N) = 2T(N-1) + 1 expands to 2^N - 1, which is O(2^N) exponential time."
+      },
+      {
+        id: 413, unit: 4, topic: "Recursion Base Case",
+        q: "What is the primary function of a base case in a recursive algorithm?",
+        correct: "To terminate the recursion and prevent stack overflow",
+        distractors: [
+          "To allocate heap memory dynamically",
+          "To partition elements around a pivot",
+          "To sort the input data before calls"
+        ],
+        exp: "Without a valid base case, recursive functions call themselves indefinitely, causing stack overflow."
+      },
+      {
+        id: 414, unit: 4, topic: "Fractional Knapsack Complexity",
+        q: "What is the running time complexity of the Fractional Knapsack greedy algorithm?",
+        correct: "O(N log N)",
+        distractors: ["O(NW)", "O(N²)", "O(log N)"],
+        exp: "The time is dominated by sorting the N items by profit/weight ratio, which takes O(N log N)."
+      },
+      {
+        id: 415, unit: 4, topic: "Quick Sort Partitioning",
+        q: "In Quick Sort, the special element used to partition the array into sub-arrays is called the:",
+        correct: "Pivot",
+        distractors: ["Root", "Median", "Leaf"],
+        exp: "Quick Sort selects a pivot element and partitions array items into those smaller and larger than the pivot."
+      },
+      {
+        id: 416, unit: 4, topic: "Greedy Algorithms Set",
+        q: "Which of the following sets consists ENTIRELY of Greedy algorithms?",
+        correct: "Prim, Kruskal, Dijkstra, and Huffman Coding",
+        distractors: [
+          "Merge Sort, Quick Sort, Binary Search",
+          "0/1 Knapsack, TSP Held-Karp, Matrix Chain",
+          "N-Queens, Graph Colouring, Sudoku"
+        ],
+        exp: "From Unit IV notes: Fractional Knapsack, Prim, Kruskal, Dijkstra, and Huffman Coding are all Greedy."
+      },
+
+      // --- UNIT V: DYNAMIC PROGRAMMING, BACKTRACKING & NP (IDs 501 - 518) ---
+      {
+        id: 501, unit: 5, topic: "Dynamic Programming Properties",
+        q: "What two key properties must a problem have to be efficiently solved with Dynamic Programming?",
+        correct: "Overlapping subproblems and optimal substructure",
+        distractors: [
+          "Greedy choice and sorted input",
+          "Divide step and merge step",
+          "Base cases and constant depth"
+        ],
+        exp: "DP requires Overlapping Subproblems (subproblems recur) and Optimal Substructure (optimal solution from optimal sub-solutions)."
+      },
+      {
+        id: 502, unit: 5, topic: "Memoization vs Tabulation",
+        q: "How does Memoization differ from Tabulation in Dynamic Programming?",
+        correct: "Memoization is Top-Down with recursion; Tabulation is Bottom-Up with an iterative table",
+        distractors: [
+          "Memoization is Bottom-Up; Tabulation is Top-Down",
+          "Memoization uses no extra memory; Tabulation uses call stacks",
+          "They are synonymous terms for Greedy choice"
+        ],
+        exp: "Memoization = Top-Down + Recursion (caches answers). Tabulation = Bottom-Up iterative table filling."
+      },
+      {
+        id: 503, unit: 5, topic: "0/1 Knapsack Complexity",
+        q: "What is the standard time complexity of the 0/1 Knapsack problem using Dynamic Programming?",
+        correct: "O(NW)",
+        distractors: ["O(N log N)", "O(2^N)", "O(N + W)"],
+        exp: "The DP table has N items by W capacity states, yielding O(NW) pseudo-polynomial time and space."
+      },
+      {
+        id: 504, unit: 5, topic: "First NP-Complete Problem",
+        q: "Which was the first problem proven to be NP-complete by the Cook-Levin Theorem?",
+        correct: "SAT (Boolean Satisfiability)",
+        distractors: [
+          "Travelling Salesman Problem (TSP)",
+          "Vertex Cover",
+          "Hamiltonian Cycle"
+        ],
+        exp: "SAT was proven NP-complete by Stephen Cook and Leonid Levin (Cook-Levin Theorem)."
+      },
+      {
+        id: 505, unit: 5, topic: "Backtracking Strategy",
+        q: "What is the defining strategy of Backtracking?",
+        correct: "Builds solutions step-by-step, abandoning candidates ('backing track') as soon as constraints fail",
+        distractors: [
+          "Chooses greedily and never reconsider previous choices",
+          "Solves overlapping subproblems by storing answers in a table",
+          "Divides data into halves recursively"
+        ],
+        exp: "Backtracking builds candidates incrementally and abandons ('backtracks') as soon as a candidate cannot lead to a valid solution."
+      },
+      {
+        id: 506, unit: 5, topic: "N-Queens Feasibility",
+        q: "For which values of N does the N-Queens problem have NO valid solutions?",
+        correct: "N = 2 and N = 3",
+        distractors: ["N = 1", "N = 4", "N = 8"],
+        exp: "N=1 has a trivial solution. N=2 and N=3 have NO solutions. N=4 and above have valid chessboard configurations."
+      },
+      {
+        id: 507, unit: 5, topic: "N-Queens Strategy",
+        q: "Which algorithmic paradigm is typically used to solve the N-Queens problem?",
+        correct: "Backtracking",
+        distractors: ["Dynamic Programming", "Greedy Method", "Divide and Conquer"],
+        exp: "N-Queens places queens row by row and backtracks when two queens threaten each other on row, column, or diagonal."
+      },
+      {
+        id: 508, unit: 5, topic: "Chromatic Number of Triangle",
+        q: "What is the chromatic number χ(G) of a triangle graph (cycle of 3 vertices, K3)?",
+        correct: "3",
+        distractors: ["1", "2", "4"],
+        exp: "In a triangle, all 3 vertices are mutually adjacent; therefore, exactly 3 distinct colours are required."
+      },
+      {
+        id: 509, unit: 5, topic: "Chromatic Number of Tree",
+        q: "What is the chromatic number of any non-empty tree?",
+        correct: "2",
+        distractors: ["1", "3", "N"],
+        exp: "Any tree is a bipartite graph (no odd cycles), and can always be properly 2-coloured."
+      },
+      {
+        id: 510, unit: 5, topic: "Chromatic Number of Complete Graph",
+        q: "What is the chromatic number χ(G) of a complete graph Kn with n vertices?",
+        correct: "n",
+        distractors: ["n - 1", "2", "n / 2"],
+        exp: "In Kn, every vertex connects to every other vertex, requiring n distinct colours."
+      },
+      {
+        id: 511, unit: 5, topic: "Meaning of NP",
+        q: "What does the abbreviation 'NP' actually stand for in computational complexity?",
+        correct: "Nondeterministic Polynomial Time",
+        distractors: ["Non-Polynomial Time", "Network Polynomial", "Near-Polynomial Time"],
+        exp: "NP stands for Nondeterministic Polynomial Time (solutions verifiable in polynomial time), NOT Non-Polynomial."
+      },
+      {
+        id: 512, unit: 5, topic: "Class P Definition",
+        q: "The complexity class P consists of decision problems that can be:",
+        correct: "Solved in polynomial time by a deterministic algorithm",
+        distractors: [
+          "Solved in exponential time only",
+          "Verified in polynomial time but never solved efficiently",
+          "Solved only using probabilistic quantum algorithms"
+        ],
+        exp: "P contains decision problems solvable in polynomial time O(N^k) by a deterministic Turing machine."
+      },
+      {
+        id: 513, unit: 5, topic: "NP-Hard vs NP-Complete",
+        q: "Which statement accurately describes the relationship between NP-Hard and NP-Complete?",
+        correct: "A problem is NP-Complete if it belongs to NP and is also NP-Hard",
+        distractors: [
+          "Every NP-hard problem must belong to NP",
+          "NP-Hard problems can be solved in O(N) linear time",
+          "NP-Complete problems cannot be verified in polynomial time"
+        ],
+        exp: "NP-Complete = NP ∩ NP-Hard. NP-Hard problems need not be in NP and need not be decision problems."
+      },
+      {
+        id: 514, unit: 5, topic: "P versus NP Status",
+        q: "What is the current formal scientific consensus regarding whether P = NP?",
+        correct: "It remains an open, unsolved Millennium Prize problem",
+        distractors: [
+          "Proven that P = NP in 2005",
+          "Proven that P ≠ NP in 2018",
+          "Disproved by the Cook-Levin theorem"
+        ],
+        exp: "Whether P equals NP remains one of the most famous open unsolved problems in computer science."
+      },
+      {
+        id: 515, unit: 5, topic: "TSP Held-Karp Complexity",
+        q: "What is the time complexity of the Held-Karp Dynamic Programming algorithm for TSP?",
+        correct: "O(N² × 2^N)",
+        distractors: ["O(N!)", "O(N³)", "O(2^N)"],
+        exp: "Held-Karp reduces TSP from O(N!) brute force down to O(N² × 2^N) using memoization over subsets."
+      },
+      {
+        id: 516, unit: 5, topic: "TSP Problem Goal",
+        q: "What is the objective of the Travelling Salesman Problem (TSP)?",
+        correct: "Visit every city exactly once and return to start with minimum total tour cost",
+        distractors: [
+          "Find the topological ordering of all cities",
+          "Find the Minimum Spanning Tree of all cities",
+          "Colour all cities such that adjacent cities share colours"
+        ],
+        exp: "TSP seeks a Hamiltonian tour of minimal total cost that visits every city once and returns to the origin."
+      },
+      {
+        id: 517, unit: 5, topic: "NP-Complete Problem Examples",
+        q: "Which of the following problems is confirmed to be NP-Complete in its decision form?",
+        correct: "Hamiltonian Cycle, 3-SAT, and Subset Sum",
+        distractors: [
+          "Merge Sort, Binary Search, and Linear Search",
+          "Dijkstra's Shortest Path and Prim's MST",
+          "Inorder Tree Traversal and Breadth First Search"
+        ],
+        exp: "Unit V notes list SAT, 3-SAT, Hamiltonian Cycle, Clique, Vertex Cover, and Subset Sum as NP-Complete."
+      },
+      {
+        id: 518, unit: 5, topic: "Edgeless Graph Chromatic Number",
+        q: "What is the chromatic number of a non-empty edgeless graph (isolated vertices)?",
+        correct: "1",
+        distractors: ["0", "2", "N"],
+        exp: "Because there are no edges connecting any vertices, a single colour can be assigned to every vertex: χ(G) = 1."
+      }
+    ];
+
+    /* =========================================================
+       REPLAY ENGINE & NEVER-REPEAT PERSISTENCE (localStorage)
+       ========================================================= */
+    const STORAGE_KEY_SEEN = "dsa_quiz_seen_ids_v1";
+
+    function getSeenIds() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_SEEN);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveSeenId(id) {
+      const seen = getSeenIds();
+      if (!seen.includes(id)) {
+        seen.push(id);
+        try {
+          localStorage.setItem(STORAGE_KEY_SEEN, JSON.stringify(seen));
+        } catch (e) {}
+      }
+      updatePoolTrackerUI();
+    }
+
+    function resetSeenHistory() {
+      try {
+        localStorage.removeItem(STORAGE_KEY_SEEN);
+      } catch (e) {}
+      updatePoolTrackerUI();
+      showToast("Question pool history reset! All 80+ questions marked unseen.", "info");
+      playTone('click');
+    }
+
+    function updatePoolTrackerUI() {
+      const seen = getSeenIds();
+      const total = QUESTION_BANK.length;
+      const seenCount = seen.length;
+      const pct = Math.min(100, Math.round((seenCount / total) * 100));
+
+      const counterEl = document.getElementById('seenCounter');
+      const pctEl = document.getElementById('seenPercentage');
+      const headerBadge = document.getElementById('poolBadgeHeader');
+
+      if (counterEl) counterEl.textContent = `${seenCount} / ${total} Explored`;
+      if (pctEl) pctEl.textContent = `${pct}% Pool Seen`;
+      if (headerBadge) headerBadge.textContent = `${total} Questions (${seenCount} Seen)`;
+    }
+
+    /* =========================================================
+       GAME STATE
+       ========================================================= */
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let streak = 0;
+    let maxStreak = 0;
+    let correctCount = 0;
+    let activeCategory = 'all';
+    let requestedCount = 10;
+
+    // Timer & Lifelines
+    let timerEnabled = true;
+    let timerDuration = 25;
+    let currentTimer = 25;
+    let timerInterval = null;
+
+    let remaining5050 = 2;
+    let remainingSkip = 2;
+    let isQuestionAnswered = false;
+
+    // Active question randomized options mapping
+    let currentRenderedOptions = [];
+    let sessionReviewLog = [];
+
+    /* =========================================================
+       SESSION SETUP & SMART PICKING (UNSEEN FIRST)
+       ========================================================= */
+    function startSession(category, count = 10) {
+      activeCategory = category;
+      requestedCount = count;
+      timerEnabled = document.getElementById('timerToggle').checked;
+      const prioritizeUnseen = document.getElementById('unseenPriorityToggle').checked;
+
+      // Filter by category
+      let eligible = (category === 'all')
+        ? [...QUESTION_BANK]
+        : QUESTION_BANK.filter(q => q.unit === category);
+
+      const seenIds = new Set(getSeenIds());
+
+      if (prioritizeUnseen) {
+        // Split into unseen and already seen
+        const unseen = eligible.filter(q => !seenIds.has(q.id));
+        const seen = eligible.filter(q => seenIds.has(q.id));
+
+        // Shuffle both subsets independently
+        const shuffledUnseen = shuffleArray(unseen);
+        const shuffledSeen = shuffleArray(seen);
+
+        // Concatenate: unseen questions appear first!
+        const ordered = [...shuffledUnseen, ...shuffledSeen];
+        currentQuestions = ordered.slice(0, Math.min(count, ordered.length));
+      } else {
+        currentQuestions = shuffleArray(eligible).slice(0, Math.min(count, eligible.length));
+      }
+
+      if (currentQuestions.length === 0) {
+        showToast("No questions found for this selection.", "error");
+        return;
+      }
+
+      // Reset runtime scores
+      currentIndex = 0;
+      score = 0;
+      streak = 0;
+      maxStreak = 0;
+      correctCount = 0;
+      remaining5050 = 2;
+      remainingSkip = 2;
+      sessionReviewLog = [];
+
+      updateLifelineButtons();
+
+      document.getElementById('homeScreen').classList.add('hidden');
+      document.getElementById('resultsScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.remove('hidden');
+
+      document.getElementById('totalQNum').textContent = currentQuestions.length;
+      updateScoreboard();
+
+      loadQuestion(currentIndex);
+    }
+
+    function returnHome() {
+      clearInterval(timerInterval);
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('resultsScreen').classList.add('hidden');
+      document.getElementById('homeScreen').classList.remove('hidden');
+      updatePoolTrackerUI();
+      playTone('click');
+    }
+
+    function quitToHomeConfirm() {
+      if (confirmDialog("Do you want to abandon this session and return to main menu?")) {
+        returnHome();
+      }
+    }
+
+    function retryCurrentQuiz() {
+      // Starting again automatically loads fresh unseen questions
+      startSession(activeCategory, requestedCount);
+    }
+
+    /* =========================================================
+       QUESTION LOADING & DYNAMIC OPTION RANDOMIZATION
+       ========================================================= */
+    function loadQuestion(index) {
+      isQuestionAnswered = false;
+      const qData = currentQuestions[index];
+
+      // Mark this question as seen in persistent storage
+      const seenIds = getSeenIds();
+      const isFirstTime = !seenIds.includes(qData.id);
+      saveSeenId(qData.id);
+
+      // HUD & Status
+      document.getElementById('currentQNum').textContent = index + 1;
+      document.getElementById('hudUnitBadge').textContent = `UNIT ${qData.unit}`;
+      document.getElementById('qCategoryName').textContent = getUnitTitle(qData.unit);
+      document.getElementById('questionTopic').textContent = qData.topic;
+      document.getElementById('questionIdLabel').textContent = `#${qData.id}`;
+      document.getElementById('questionPrompt').textContent = qData.q;
+
+      // Status pill: Fresh vs Encountered
+      const statusPill = document.getElementById('seenStatusPill');
+      if (isFirstTime) {
+        statusPill.textContent = "FRESH MCQ";
+        statusPill.className = "text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800";
+      } else {
+        statusPill.textContent = "SEEN BEFORE";
+        statusPill.className = "text-[9px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700";
+      }
+
+      // Linear Progress Bar
+      const progressPercent = ((index) / currentQuestions.length) * 100;
+      document.getElementById('progressBar').style.width = `${progressPercent}%`;
+
+      // Hide Explanation Drawer
+      document.getElementById('explanationBox').classList.add('hidden');
+
+      // Randomize options order on EVERY view so letter memory never cheats
+      const optionsPool = [
+        { text: qData.correct, isCorrect: true },
+        ...qData.distractors.map(d => ({ text: d, isCorrect: false }))
+      ];
+      currentRenderedOptions = shuffleArray(optionsPool);
+
+      const optionsContainer = document.getElementById('optionsGrid');
+      optionsContainer.innerHTML = '';
+
+      const letters = ['A', 'B', 'C', 'D'];
+
+      currentRenderedOptions.forEach((opt, optIndex) => {
+        const btn = document.createElement('button');
+        btn.id = `optBtn_${optIndex}`;
+        btn.onclick = () => handleAnswerSelect(optIndex);
+        btn.className = "w-full text-left p-3.5 sm:p-4 rounded-2xl bg-slate-800/80 hover:bg-slate-750 border border-slate-700/80 hover:border-cyan-500/60 transition-all duration-150 flex items-center justify-between group cursor-pointer focus:outline-none";
+
+        btn.innerHTML = `
+          <div class="flex items-center gap-3">
+            <span class="w-8 h-8 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center font-mono text-xs font-bold text-cyan-400 group-hover:border-cyan-500/50 transition">${letters[optIndex]}</span>
+            <span class="text-xs sm:text-sm text-slate-200 font-medium group-hover:text-white">${opt.text}</span>
+          </div>
+          <span class="option-icon opacity-0 group-hover:opacity-30 text-xs transition">
+            <i class="fa-solid fa-chevron-right text-slate-400"></i>
+          </span>
+        `;
+        optionsContainer.appendChild(btn);
+      });
+
+      // Timer
+      if (timerEnabled) {
+        document.getElementById('timerContainer').classList.remove('hidden');
+        startTimer();
+      } else {
+        document.getElementById('timerContainer').classList.add('hidden');
+      }
+    }
+
+    function handleAnswerSelect(selectedIndex) {
+      if (isQuestionAnswered) return;
+      isQuestionAnswered = true;
+      clearInterval(timerInterval);
+
+      const qData = currentQuestions[currentIndex];
+      const isCorrect = (selectedIndex !== null && currentRenderedOptions[selectedIndex].isCorrect);
+
+      // Disable all option buttons
+      currentRenderedOptions.forEach((_, idx) => {
+        const btn = document.getElementById(`optBtn_${idx}`);
+        if (btn) {
+          btn.disabled = true;
+          btn.classList.remove('hover:border-cyan-500/60', 'hover:bg-slate-750', 'cursor-pointer');
+        }
+      });
+
+      const selectedBtn = selectedIndex !== null ? document.getElementById(`optBtn_${selectedIndex}`) : null;
+      const correctIdx = currentRenderedOptions.findIndex(o => o.isCorrect);
+      const correctBtn = document.getElementById(`optBtn_${correctIdx}`);
+
+      // Log review breakdown
+      sessionReviewLog.push({
+        qNum: currentIndex + 1,
+        id: qData.id,
+        unit: qData.unit,
+        topic: qData.topic,
+        question: qData.q,
+        userAnswer: selectedIndex !== null ? currentRenderedOptions[selectedIndex].text : "Timed Out / Skipped",
+        correctAnswer: qData.correct,
+        isCorrect: isCorrect,
+        explanation: qData.exp
+      });
+
+      const qCard = document.getElementById('questionCard');
+
+      if (isCorrect) {
+        correctCount++;
+        streak++;
+        if (streak > maxStreak) maxStreak = streak;
+
+        let points = 100;
+        if (streak > 1) points += (streak * 15);
+        if (timerEnabled) points += (currentTimer * 4);
+        score += points;
+
+        if (selectedBtn) {
+          selectedBtn.classList.remove('bg-slate-800/80', 'border-slate-700/80');
+          selectedBtn.classList.add('bg-emerald-950/80', 'border-emerald-500', 'glow-emerald');
+          const iconSpan = selectedBtn.querySelector('.option-icon');
+          iconSpan.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>';
+          iconSpan.classList.remove('opacity-0');
+        }
+
+        playTone('correct');
+        triggerMiniConfetti();
+      } else {
+        streak = 0;
+        if (selectedBtn) {
+          selectedBtn.classList.remove('bg-slate-800/80', 'border-slate-700/80');
+          selectedBtn.classList.add('bg-rose-950/80', 'border-rose-500', 'glow-rose');
+          const iconSpan = selectedBtn.querySelector('.option-icon');
+          iconSpan.innerHTML = '<i class="fa-solid fa-circle-xmark text-rose-400 text-base"></i>';
+          iconSpan.classList.remove('opacity-0');
+        }
+
+        // Highlight correct answer
+        if (correctBtn) {
+          correctBtn.classList.remove('bg-slate-800/80', 'border-slate-700/80');
+          correctBtn.classList.add('bg-emerald-950/70', 'border-emerald-500/80');
+        }
+
+        qCard.classList.add('animate-shake');
+        setTimeout(() => qCard.classList.remove('animate-shake'), 450);
+
+        playTone('wrong');
+      }
+
+      updateScoreboard();
+      showExplanation(isCorrect, qData.exp);
+    }
+
+    function showExplanation(isCorrect, explanationText) {
+      const expBox = document.getElementById('explanationBox');
+      const expTitle = document.getElementById('expTitle');
+      const expText = document.getElementById('expText');
+      const expIcon = document.getElementById('expIcon');
+
+      if (isCorrect) {
+        expTitle.textContent = "Exact Concept Match (+Points)!";
+        expTitle.className = "text-sm font-bold text-emerald-400";
+        expIcon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
+      } else {
+        expTitle.textContent = "Key Exam Note Concept:";
+        expTitle.className = "text-sm font-bold text-rose-400";
+        expIcon.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-rose-400"></i>';
+      }
+
+      expText.textContent = explanationText;
+      expBox.classList.remove('hidden');
+
+      const btnNext = document.getElementById('btnNext');
+      if (currentIndex === currentQuestions.length - 1) {
+        btnNext.innerHTML = '<span>Finish & View Score</span> <i class="fa-solid fa-trophy"></i>';
+      } else {
+        btnNext.innerHTML = '<span>Next Question</span> <i class="fa-solid fa-arrow-right"></i>';
+      }
+    }
+
+    function nextQuestion() {
+      playTone('click');
+      currentIndex++;
+      if (currentIndex < currentQuestions.length) {
+        loadQuestion(currentIndex);
+      } else {
+        showResultsScreen();
+      }
+    }
+
+    /* =========================================================
+       TIMER CONTROLLER
+       ========================================================= */
+    function startTimer() {
+      clearInterval(timerInterval);
+      currentTimer = timerDuration;
+      updateTimerDisplay();
+
+      timerInterval = setInterval(() => {
+        currentTimer--;
+        updateTimerDisplay();
+
+        if (currentTimer <= 0) {
+          clearInterval(timerInterval);
+          handleTimeOut();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const timerEl = document.getElementById('timeLeft');
+      timerEl.textContent = `${currentTimer}s`;
+
+      if (currentTimer <= 5) {
+        timerEl.classList.remove('text-cyan-300');
+        timerEl.classList.add('text-rose-400', 'animate-pulse');
+      } else {
+        timerEl.classList.add('text-cyan-300');
+        timerEl.classList.remove('text-rose-400', 'animate-pulse');
+      }
+    }
+
+    function handleTimeOut() {
+      showToast("Time's up for this question!", "error");
+      handleAnswerSelect(null);
+    }
+
+    /* =========================================================
+       LIFELINES
+       ========================================================= */
+    function use5050() {
+      if (isQuestionAnswered || remaining5050 <= 0) return;
+      playTone('lifeline');
+
+      const incorrectIndices = [];
+      currentRenderedOptions.forEach((opt, idx) => {
+        if (!opt.isCorrect) incorrectIndices.push(idx);
+      });
+
+      const toRemove = shuffleArray(incorrectIndices).slice(0, 2);
+      toRemove.forEach(idx => {
+        const btn = document.getElementById(`optBtn_${idx}`);
+        if (btn) {
+          btn.classList.add('opacity-20', 'pointer-events-none');
+          btn.disabled = true;
+        }
+      });
+
+      remaining5050--;
+      updateLifelineButtons();
+      showToast("50/50: 2 incorrect options eliminated", "info");
+    }
+
+    function useSkip() {
+      if (isQuestionAnswered || remainingSkip <= 0) return;
+      playTone('lifeline');
+
+      clearInterval(timerInterval);
+      remainingSkip--;
+      updateLifelineButtons();
+      showToast("Question skipped without penalty", "info");
+
+      const qData = currentQuestions[currentIndex];
+      sessionReviewLog.push({
+        qNum: currentIndex + 1,
+        id: qData.id,
+        unit: qData.unit,
+        topic: qData.topic,
+        question: qData.q,
+        userAnswer: "Skipped (Lifeline Used)",
+        correctAnswer: qData.correct,
+        isCorrect: false,
+        explanation: qData.exp
+      });
+
+      currentIndex++;
+      if (currentIndex < currentQuestions.length) {
+        loadQuestion(currentIndex);
+      } else {
+        showResultsScreen();
+      }
+    }
+
+    function updateLifelineButtons() {
+      document.getElementById('rem5050').textContent = remaining5050;
+      document.getElementById('remSkip').textContent = remainingSkip;
+
+      document.getElementById('btn5050').disabled = (remaining5050 <= 0);
+      document.getElementById('btnSkip').disabled = (remainingSkip <= 0);
+    }
+
+    /* =========================================================
+       RESULTS & REVIEW SCREEN
+       ========================================================= */
+    function showResultsScreen() {
+      clearInterval(timerInterval);
+      document.getElementById('gameScreen').classList.add('hidden');
+      document.getElementById('resultsScreen').classList.remove('hidden');
+
+      const total = currentQuestions.length;
+      const accuracy = Math.round((correctCount / total) * 100);
+
+      document.getElementById('finalScore').textContent = score;
+      document.getElementById('finalAccuracy').textContent = `${accuracy}%`;
+      document.getElementById('finalStreak').textContent = `${maxStreak}x`;
+      document.getElementById('finalSolved').textContent = `${correctCount}/${total}`;
+
+      const badge = document.getElementById('resultBadge');
+      const headline = document.getElementById('resultHeadline');
+      const subtitle = document.getElementById('resultSubtitle');
+
+      if (accuracy >= 85) {
+        badge.innerHTML = '🥇';
+        headline.textContent = "DSA Master! Exam Ready!";
+        subtitle.textContent = "Flawless mastery! You demonstrated deep recall of complexities, formulas, and graph theories.";
+        triggerVictoryConfetti();
+      } else if (accuracy >= 60) {
+        badge.innerHTML = '🥈';
+        headline.textContent = "Strong Run!";
+        subtitle.textContent = "Solid score! Reviewing the missed questions below will easily secure top marks in your objective exam.";
+      } else {
+        badge.innerHTML = '🎯';
+        headline.textContent = "Good Practice Run!";
+        subtitle.textContent = "Every run strengthens memory. Read the note explanations below and hit 'Play Next Fresh Round'!";
+      }
+
+      // Populate Review List
+      const reviewContainer = document.getElementById('reviewList');
+      reviewContainer.innerHTML = '';
+
+      const mistakes = sessionReviewLog.filter(item => !item.isCorrect);
+      document.getElementById('mistakeBadge').textContent = `${mistakes.length} Questions to Review`;
+
+      sessionReviewLog.forEach(item => {
+        const div = document.createElement('div');
+        div.className = `p-4 rounded-2xl border ${item.isCorrect ? 'bg-slate-950/60 border-emerald-950' : 'bg-slate-950/80 border-rose-950/80'}`;
+
+        div.innerHTML = `
+          <div class="flex items-start justify-between gap-2 mb-1.5">
+            <span class="text-xs font-mono font-bold ${item.isCorrect ? 'text-emerald-400' : 'text-rose-400'}">
+              ${item.isCorrect ? '<i class="fa-solid fa-check mr-1"></i> Correct' : '<i class="fa-solid fa-xmark mr-1"></i> Incorrect'} (Q${item.qNum} &bull; Unit ${item.unit} &bull; ${item.topic})
+            </span>
+            <span class="text-[10px] text-slate-500 font-mono">#${item.id}</span>
+          </div>
+          <p class="text-xs sm:text-sm font-semibold text-slate-200 mb-2">${item.question}</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs mb-2">
+            <div class="p-2 rounded-lg bg-slate-900 border border-slate-800">
+              <span class="text-slate-400 block text-[10px] uppercase font-mono">Your Response:</span>
+              <span class="${item.isCorrect ? 'text-emerald-300 font-semibold' : 'text-rose-300 line-through'}">${item.userAnswer}</span>
+            </div>
+            <div class="p-2 rounded-lg bg-slate-900 border border-slate-800">
+              <span class="text-slate-400 block text-[10px] uppercase font-mono">Correct Answer:</span>
+              <span class="text-emerald-300 font-bold">${item.correctAnswer}</span>
+            </div>
+          </div>
+          <div class="text-xs text-slate-400 p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
+            <i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i>
+            <span class="text-slate-300 font-mono text-[11px]">${item.explanation}</span>
+          </div>
+        `;
+        reviewContainer.appendChild(div);
+      });
+
+      updatePoolTrackerUI();
+    }
+
+    /* =========================================================
+       HELPERS & MODALS
+       ========================================================= */
+    function updateScoreboard() {
+      document.getElementById('scoreText').textContent = score;
+      document.getElementById('streakCount').textContent = streak;
+
+      const streakBox = document.getElementById('streakBox');
+      if (streak >= 3) {
+        streakBox.classList.add('border-amber-500/60', 'bg-amber-950/40');
+      } else {
+        streakBox.classList.remove('border-amber-500/60', 'bg-amber-950/40');
+      }
+    }
+
+    function getUnitTitle(unit) {
+      switch(unit) {
+        case 1: return "Unit I: Basics, Complexity & Arrays";
+        case 2: return "Unit II: Stacks, Queues & Linked Lists";
+        case 3: return "Unit III: Trees & Graphs";
+        case 4: return "Unit IV: Divide & Conquer / Greedy";
+        case 5: return "Unit V: DP, Backtracking & NP";
+        default: return "DSA Comprehensive";
+      }
+    }
+
+    // Fisher-Yates array shuffling
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toastNotification');
+      const toastMsg = document.getElementById('toastMsg');
+      const toastIcon = document.getElementById('toastIcon');
+
+      toastMsg.textContent = message;
+      if (type === 'error') {
+        toastIcon.className = 'fa-solid fa-circle-exclamation text-rose-400';
+      } else {
+        toastIcon.className = 'fa-solid fa-circle-info text-cyan-400';
+      }
+
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 2500);
+    }
+
+    function confirmDialog(msg) {
+      return window.confirm(msg);
+    }
+
+    function openFormulaModal() {
+      document.getElementById('formulaModal').classList.remove('hidden');
+      playTone('click');
+    }
+
+    function closeFormulaModal() {
+      document.getElementById('formulaModal').classList.add('hidden');
+      playTone('click');
+    }
+
+    function triggerMiniConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 25,
+          spread: 45,
+          origin: { y: 0.8 },
+          colors: ['#06b6d4', '#10b981', '#6366f1']
+        });
+      }
+    }
+
+    function triggerVictoryConfetti() {
+      if (typeof confetti === 'function') {
+        const count = 200;
+        const defaults = { origin: { y: 0.7 } };
+
+        function fire(particleRatio, opts) {
+          confetti(Object.assign({}, defaults, opts, {
+            particleCount: Math.floor(count * particleRatio)
+          }));
+        }
+
+        fire(0.25, { spread: 26, startVelocity: 55 });
+        fire(0.2, { spread: 60 });
+        fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+        fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+        fire(0.1, { spread: 120, startVelocity: 45 });
+      }
+    }
+
+    window.onload = function() {
+      updatePoolTrackerUI();
+      document.addEventListener('click', function unlockAudio() {
+        initAudio();
+        document.removeEventListener('click', unlockAudio);
+      }, { once: true });
+    };
+  </script>
+</body>
+</html>
